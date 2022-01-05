@@ -1,63 +1,78 @@
 // SPDX-License-Identifier: MIT
-// Author : spikeyrock - nftit
-// Contact : nftit@protonmail.com
-// Discription : Payment system to recieve funds for Warlands.io "Chests"
-//hexa 0.25 = 3782DACE9D90000
-//hexa 0.65 = 905438E60010000
-//hexa 1.65 = 16E5FA4207650000
-//
-//after deployment like previous time update contract abi with the new abi
-//
-//add the new deployed contract address to the file
-//
-//update the numbers to the current number of minted completed
-//
-//update number of total minted in the contract from old contract data
-//
-//update switch case in file
-//update on front end where required 
-//
+pragma solidity ^0.8.9;
 
-
-pragma solidity =0.8.9;
-
-contract WarlandsChest  {
-    string public name = "Warlands Presale Chests";
-    uint256 public SilverCost = 0.25 ether;
-    uint256 public totalSilverMinted = ;
-    uint256 public GoldCost = 0.65 ether;
-    uint256 public totalGoldMinted = ;
+contract WarlandsChest2  {
+    string public name = "Warlands Presale Chests 2";
+    uint256 public SilverCost = 0.1 ether;
+    uint256 public GoldCost = 0.3 ether;
     uint256 public DiamondCost = 1.65 ether;
-    uint256 public totalDiamondMinted = ;
+    uint256 public totalSilverMinted = 80;
+    uint256 public totalGoldMinted = 115;
+    uint256 public totalDiamondMinted = 150;
     
     event boughtChest(address indexed _from, uint256 cost); 
+    event withdrawing(address indexed _from,address indexed _to, uint256 withdrawAmount); 
+    
     modifier shouldPay(uint256 _cost) {
-        require(msg.value >= _cost, "The chests cost more!");
+        require(msg.value >= _cost, "The chest costs more!");
         _;
     }
-    function BuySilverChest() payable public shouldPay(SilverCost) {
+    modifier onlyOwner(){
+            require(msg.sender == owner, "Only owner can access this!");
+            _;
+        }
+
+function setTotalSilverMinted(uint newSilverMintedCount) public onlyOwner
+    {
+        totalSilverMinted = newSilverMintedCount;
+    }
+    function setTotalGoldMinted(uint newGoldMintedCount) public onlyOwner
+    {
+        totalGoldMinted = newGoldMintedCount;
+    }
+    function setTotalDiamondMinted(uint newDiamondMintedCount) public onlyOwner
+    {
+        totalDiamondMinted = newDiamondMintedCount;
+    }
+
+
+        function setSilverChestPrice(uint newSilverChest) public onlyOwner
+    {
+        SilverCost = newSilverChest;
+    }
+    function setGoldChestPrice(uint newGoldChest) public onlyOwner
+    {
+        GoldCost = newGoldChest;
+    }
+    function setDiamondChestPrice(uint newDiamondChest) public onlyOwner
+    {
+        DiamondCost = newDiamondChest;
+    }
+
+
+    function BuySilverChest() payable external shouldPay(SilverCost) {
         emit boughtChest(msg.sender, SilverCost);
         totalSilverMinted++;
     }
-    function BuyGoldChest() payable public shouldPay(GoldCost) {
+    function BuyGoldChest() payable external shouldPay(GoldCost) {
         emit boughtChest(msg.sender, GoldCost);
         totalGoldMinted++;
     }
-    function BuyDiamondChest() payable public shouldPay(DiamondCost) {
+    function BuyDiamondChest() payable external shouldPay(DiamondCost) {
         emit boughtChest(msg.sender, DiamondCost);
         totalDiamondMinted++;
     }
-    function getFunds() public view returns(uint256) {
+    function getFunds() public view onlyOwner returns(uint256)  {
         return address(this).balance;
     }
-    address payable public owner;
+    address payable private owner;
     constructor() payable {
         owner = payable(msg.sender);
     }
-    function withdraw() public {
+    function Withdraw() public onlyOwner{
         uint amount = address(this).balance;
         (bool success, ) = owner.call{value: amount}("");
         require(success, "Failed to send Ether");
+        emit withdrawing(msg.sender, owner, amount);
     }
-
 }
