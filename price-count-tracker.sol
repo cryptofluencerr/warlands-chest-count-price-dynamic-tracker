@@ -3,15 +3,18 @@ pragma solidity ^0.8.9;
 
 contract WarlandsChest2 {
     string public name = "Warlands Presale Chests 2";
-    uint256 public SilverCost = 0.1 ether;
-    uint256 public GoldCost = 0.3 ether;
-    uint256 public DiamondCost = 1.65 ether;
-    uint256 public totalSilverMinted = 80;
-    uint256 public totalGoldMinted = 115;
-    uint256 public totalDiamondMinted = 150;
-    uint256 public maxSilverChests = 1000;
-    uint256 public maxGoldChests = 2000;
-    uint256 public maxDiamondChests = 3000;
+    uint256 public SilverChestCost = 0.1 ether;
+    uint256 public GoldChestCost = 0.3 ether;
+    uint256 public DiamondChestCost = 1.65 ether;
+    uint256 public PlatinumChestCost = 1 ether;
+    uint256 public totalSilverChestMinted = 80;
+    uint256 public totalGoldChestMinted = 115;
+    uint256 public totalDiamondChestMinted = 150;
+    uint256 public totalPlatinumChestMinted = 0;
+    uint256 public maxSilverChestSupply = 1000;
+    uint256 public maxGoldChestSupply = 2000;
+    uint256 public maxDiamondChestSupply = 3000;
+    uint256 public maxPlatinumChestSupply = 150;
 
     event boughtChest(address indexed _from, uint256 cost);
     event withdrawing(
@@ -29,52 +32,112 @@ contract WarlandsChest2 {
         _;
     }
 
-    function setTotalSilverMinted(uint256 newSilverMintedCount)
+    function setMaxSilverSupply(uint256 newMaxSilverChestSupply)
         public
         onlyOwner
     {
-        totalSilverMinted = newSilverMintedCount;
+        maxSilverChestSupply = newMaxSilverChestSupply;
     }
 
-    function setTotalGoldMinted(uint256 newGoldMintedCount) public onlyOwner {
-        totalGoldMinted = newGoldMintedCount;
+    function setMaxGoldSupply(uint256 newMaxGoldChestSupply) public onlyOwner {
+        maxGoldChestSupply = newMaxGoldChestSupply;
     }
 
-    function setTotalDiamondMinted(uint256 newDiamondMintedCount)
+    function setMaxDiamondSupply(uint256 newMaxDiamondChestSupply)
         public
         onlyOwner
     {
-        totalDiamondMinted = newDiamondMintedCount;
+        maxDiamondChestSupply = newMaxDiamondChestSupply;
     }
 
-    function setSilverChestPrice(uint256 newSilverChest) public onlyOwner {
-        SilverCost = newSilverChest;
+    function setMaxPlatinumSupply(uint256 newMaxPlatinumChestSupply)
+        public
+        onlyOwner
+    {
+        maxPlatinumChestSupply = newMaxPlatinumChestSupply;
     }
 
-    function setGoldChestPrice(uint256 newGoldChest) public onlyOwner {
-        GoldCost = newGoldChest;
+    function setTotalSilverChestMinted(uint256 newSilverChestMintedCount)
+        public
+        onlyOwner
+    {
+        totalSilverChestMinted = newSilverChestMintedCount;
     }
 
-    function setDiamondChestPrice(uint256 newDiamondChest) public onlyOwner {
-        DiamondCost = newDiamondChest;
+    function setTotalGoldChestMinted(uint256 newGoldChestMintedCount)
+        public
+        onlyOwner
+    {
+        totalGoldChestMinted = newGoldChestMintedCount;
     }
 
-    function BuySilverChest() external payable shouldPay(SilverCost) {
-        require(totalSilverMinted <= maxSilverChests, "Maximum Silver Chests minted!");
-        emit boughtChest(msg.sender, SilverCost);
-        totalSilverMinted++;
+    function setTotalDiamondChestMinted(uint256 newDiamondChestMintedCount)
+        public
+        onlyOwner
+    {
+        totalDiamondChestMinted = newDiamondChestMintedCount;
     }
 
-    function BuyGoldChest() external payable shouldPay(GoldCost) {
-        require(totalGoldMinted <= maxGoldChests, "Maximum Gold Chests minted!");
-        emit boughtChest(msg.sender, GoldCost);
-        totalGoldMinted++;
+    function setTotalPlatinumChestMinted(uint256 newPlatinumChestMintedCount)
+        public
+        onlyOwner
+    {
+        totalPlatinumChestMinted = newPlatinumChestMintedCount;
     }
 
-    function BuyDiamondChest() external payable shouldPay(DiamondCost) {
-        require(totalDiamondMinted <= maxDiamondChests, "Maximum Diamond Chests minted!");
-        emit boughtChest(msg.sender, DiamondCost);
-        totalDiamondMinted++;
+    function setSilverChestCost(uint256 newSilverChestCost) public onlyOwner {
+        SilverChestCost = newSilverChestCost;
+    }
+
+    function setGoldChestCost(uint256 newGoldChestCost) public onlyOwner {
+        GoldChestCost = newGoldChestCost;
+    }
+
+    function setDiamondChestCost(uint256 newDiamondChestCost) public onlyOwner {
+        DiamondChestCost = newDiamondChestCost;
+    }
+
+    function setPlatinumChestCost(uint256 newPlatinumChestCost)
+        public
+        onlyOwner
+    {
+        PlatinumChestCost = newPlatinumChestCost;
+    }
+
+    function BuySilverChest() external payable shouldPay(SilverChestCost) {
+        require(
+            totalSilverChestMinted <= maxSilverChestSupply - 1,
+            "Maximum Silver Chests minted!"
+        );
+        emit boughtChest(msg.sender, SilverChestCost);
+        totalSilverChestMinted++;
+    }
+
+    function BuyGoldChest() external payable shouldPay(GoldChestCost) {
+        require(
+            totalGoldChestMinted <= maxGoldChestSupply - 1,
+            "Maximum Gold Chests minted!"
+        );
+        emit boughtChest(msg.sender, GoldChestCost);
+        totalGoldChestMinted++;
+    }
+
+    function BuyDiamondChest() external payable shouldPay(DiamondChestCost) {
+        require(
+            totalDiamondChestMinted <= maxDiamondChestSupply - 1,
+            "Maximum Diamond Chests minted!"
+        );
+        emit boughtChest(msg.sender, DiamondChestCost);
+        totalDiamondChestMinted++;
+    }
+
+    function BuyPlatinumChest() external payable shouldPay(PlatinumChestCost) {
+        require(
+            totalPlatinumChestMinted <= maxPlatinumChestSupply - 1,
+            "Maximum Platinum Chests minted!"
+        );
+        emit boughtChest(msg.sender, PlatinumChestCost);
+        totalPlatinumChestMinted++;
     }
 
     function getFunds() public view onlyOwner returns (uint256) {
