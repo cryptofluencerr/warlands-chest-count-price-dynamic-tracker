@@ -72,7 +72,7 @@ function setTotalSilverMinted(uint newSilverMintedCount) public onlyOwner
     function Withdraw() public onlyOwner{
         uint amount = address(this).balance;
         (bool success, ) = owner.call{value: amount}("");
-        require(success, "Failed to send Ether");
+        require(success, "Failed to send BNB");
         emit withdrawing(msg.sender, owner, amount);
     }
 }
