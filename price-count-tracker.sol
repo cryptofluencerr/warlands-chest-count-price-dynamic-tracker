@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-contract WarlandsChest2 {
-    string public name = "Warlands Presale Chests 2";
+contract WarlandsChest {
+    string public name = "Warlands Presale Chests";
     uint256 public SilverChestCost = 0.1 ether;
     uint256 public GoldChestCost = 0.3 ether;
     uint256 public DiamondChestCost = 1.65 ether;
     uint256 public PlatinumChestCost = 1 ether;
-    uint256 public totalSilverChestMinted = 80;
-    uint256 public totalGoldChestMinted = 115;
-    uint256 public totalDiamondChestMinted = 150;
+    uint256 public totalSilverChestMinted = 219;
+    uint256 public totalGoldChestMinted = 250;
+    uint256 public totalDiamondChestMinted = 44;
     uint256 public totalPlatinumChestMinted = 0;
-    uint256 public maxSilverChestSupply = 1000;
-    uint256 public maxGoldChestSupply = 2000;
-    uint256 public maxDiamondChestSupply = 3000;
+    uint256 public maxSilverChestSupply = 525;
+    uint256 public maxGoldChestSupply = 325;
+    uint256 public maxDiamondChestSupply = 2500;
     uint256 public maxPlatinumChestSupply = 150;
 
     event boughtChest(address indexed _from, uint256 cost);
