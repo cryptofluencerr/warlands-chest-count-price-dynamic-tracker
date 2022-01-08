@@ -140,7 +140,7 @@ contract WarlandsChest2 {
         totalPlatinumChestMinted++;
     }
 
-    function getFunds() public view onlyOwner returns (uint256) {
+    function getFunds() public view returns (uint256) {
         return address(this).balance;
     }
 
