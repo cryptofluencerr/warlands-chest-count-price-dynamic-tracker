@@ -144,7 +144,7 @@ contract WarlandsChest {
         return address(this).balance;
     }
 
-    address payable external owner;
+    address payable public owner;
 
     constructor() payable {
         owner = payable(msg.sender);
